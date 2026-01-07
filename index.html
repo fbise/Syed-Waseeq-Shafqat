@@ -7,25 +7,24 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --cyber-green: #00ff41;
       --cyber-blue: #00f0ff;
       --cyber-red: #ff003c;
-      --dark-bg: #050505;
+      --bg: #030303;
     }
     body {
-      background-color: var(--dark-bg);
+      background-color: var(--bg);
       color: white;
       font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
       margin: 0;
+      overflow-x: hidden;
     }
-    .mono {
-      font-family: 'JetBrains Mono', monospace;
-    }
-    /* Loading Screen Styles */
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Boot Sequence UI */
     #boot-loader {
       position: fixed;
       inset: 0;
@@ -35,104 +34,63 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.5s ease-out;
+      transition: opacity 0.8s ease-in-out;
+    }
+    .boot-box {
+      width: 280px;
+      padding: 20px;
+      border: 1px solid rgba(0, 255, 65, 0.2);
+      position: relative;
     }
     .boot-text {
-      font-family: 'JetBrains Mono', monospace;
       color: var(--cyber-green);
-      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
       letter-spacing: 2px;
-      margin-top: 20px;
+      margin-bottom: 10px;
     }
     .boot-bar {
-      width: 200px;
       height: 2px;
       background: #111;
       position: relative;
       overflow: hidden;
     }
-    .boot-bar::after {
-      content: '';
+    .boot-progress {
       position: absolute;
       left: -100%;
       width: 100%;
       height: 100%;
       background: var(--cyber-green);
-      animation: loading 2s infinite linear;
+      animation: load 2.5s infinite linear;
     }
-    @keyframes loading {
+    @keyframes load {
       0% { left: -100%; }
-      50% { left: 0; }
+      50% { left: 0%; }
       100% { left: 100%; }
     }
-    
-    .glitch {
-      position: relative;
+
+    /* Cinematic Effects */
+    .scanline {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.15;
     }
+    .glow-green { text-shadow: 0 0 10px var(--cyber-green); }
+    .glitch { position: relative; }
     .glitch::before, .glitch::after {
       content: attr(data-text);
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
     }
-    .glitch::before {
-      left: 2px;
-      text-shadow: -2px 0 var(--cyber-red);
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim 5s infinite linear alternate-reverse;
-    }
-    .glitch::after {
-      left: -2px;
-      text-shadow: -2px 0 var(--cyber-blue);
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim2 5s infinite linear alternate-reverse;
-    }
-    @keyframes glitch-anim {
-      0% { clip: rect(31px, 9999px, 94px, 0); }
-      20% { clip: rect(62px, 9999px, 42px, 0); }
-      40% { clip: rect(15px, 9999px, 61px, 0); }
-      60% { clip: rect(85px, 9999px, 12px, 0); }
-      80% { clip: rect(44px, 9999px, 88px, 0); }
-      100% { clip: rect(7px, 9999px, 23px, 0); }
-    }
-    @keyframes glitch-anim2 {
-      0% { clip: rect(10px, 9999px, 65px, 0); }
-      20% { clip: rect(47px, 9999px, 12px, 0); }
-      40% { clip: rect(82px, 9999px, 34px, 0); }
-      60% { clip: rect(21px, 9999px, 77px, 0); }
-      80% { clip: rect(59px, 9999px, 19px, 0); }
-      100% { clip: rect(33px, 9999px, 91px, 0); }
-    }
-    .scanline {
-      width: 100%;
-      height: 100px;
-      z-index: 50;
-      background: linear-gradient(0deg, rgba(0, 255, 65, 0) 0%, rgba(0, 255, 65, 0.05) 50%, rgba(0, 255, 65, 0) 100%);
-      opacity: 0.1;
-      position: fixed;
-      bottom: 100%;
-      animation: scanline 8s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes scanline {
-      0% { bottom: 100%; }
-      100% { bottom: -100px; }
-    }
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #000;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--cyber-green);
-    }
-    .glow-border {
-      box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
-      border: 1px solid rgba(0, 255, 65, 0.2);
-    }
+    .glitch::before { left: 2px; text-shadow: -2px 0 var(--cyber-red); clip: rect(44px, 450px, 56px, 0); animation: g1 5s infinite linear alternate-reverse; }
+    .glitch::after { left: -2px; text-shadow: -2px 0 var(--cyber-blue); clip: rect(44px, 450px, 56px, 0); animation: g2 5s infinite linear alternate-reverse; }
+    @keyframes g1 { 0% { clip: rect(31px, 999px, 94px, 0); } 100% { clip: rect(7px, 999px, 23px, 0); } }
+    @keyframes g2 { 0% { clip: rect(10px, 999px, 65px, 0); } 100% { clip: rect(33px, 999px, 91px, 0); } }
   </style>
   <script type="importmap">
 {
@@ -150,8 +108,10 @@
 </head>
 <body>
   <div id="boot-loader">
-    <div class="boot-bar"></div>
-    <div class="boot-text">INITIALIZING_SECURE_NODE...</div>
+    <div class="boot-box">
+      <div class="boot-text">System_Initialize: WASEEQ.SEC</div>
+      <div class="boot-bar"><div class="boot-progress"></div></div>
+    </div>
   </div>
   <div class="scanline"></div>
   <div id="root"></div>
@@ -160,9 +120,11 @@
     window.addEventListener('load', () => {
       setTimeout(() => {
         const loader = document.getElementById('boot-loader');
-        if (loader) loader.style.opacity = '0';
-        setTimeout(() => loader && loader.remove(), 500);
-      }, 1500);
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.remove(), 800);
+        }
+      }, 2000);
     });
   </script>
 </body>

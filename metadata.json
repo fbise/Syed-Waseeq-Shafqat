@@ -1,5 +1,5 @@
 {
-  "description": "WASEEQ - Cinematic Cyber Security Expert Profile with interactive terminal and Gemini-powered Sentinel AI.",
-  "requestFramePermissions": [],
-  "name": "App"
+  "name": "Waseeq Cyber Profile",
+  "description": "Professional cyber security expert profile for Waseeq with cinematic matrix effects, interactive terminal, and sentinel AI.",
+  "requestFramePermissions": []
 }
